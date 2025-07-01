@@ -1,2 +1,2 @@
-from modules.playwright import  scrape
+from modules.playwright_kod import  scrape
 scrape()
