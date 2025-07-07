@@ -1,4 +1,4 @@
-from modules.playwright_kod import scrape
+from modules.databaze import report_make
 
 if __name__ == "__main__":
-	scrape()
+	report_make()
