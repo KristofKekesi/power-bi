@@ -1,0 +1,6 @@
+psycopg2-binary==2.9.10
+playwright==1.53
+asyncio==3.4.3
+unidecode==1.4.0
+fpdf2==2.8.3
+pytz=2025.2
