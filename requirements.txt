@@ -1,4 +1,0 @@
-psycopg2-binary==2.9.10
-playwright==1.53
-asyncio==3.13.5
-unidecode==2.9
