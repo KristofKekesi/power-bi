@@ -8,7 +8,7 @@ class Data:
 	def __init__(self, 
 			  title: str, 
 			  description: str, 
-			  link: str, 
+			  link: str, # list[str]
 			  status: Literal["fail", "success", "normal"]
 			):
 		self.title = title
