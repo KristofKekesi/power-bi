@@ -94,7 +94,7 @@ class TixaConnector:
                     elif tixa_url is None: 
                         status = "normal"
                         description = f"Letezik helyszin hasonlo nevvel ({name}). Nincs tixa_url-el osszekotve."
-                        link = f"https://www.tivornya.hu/P/{id}"
+                        link = place_tixa_url #f"https://www.tivornya.hu/P/{id}"
                 
                 data = Data(
                     title=place_name,
@@ -121,6 +121,7 @@ class TixaConnector:
                 if t not in seen:
                     seen.add(t)
                     unique_pairs.append([event_name, event_tixa_url])
+            unique_pairs[:] = [pair for pair in unique_pairs if 'bérlet' not in pair[0].lower()]
             return unique_pairs
 
         def eval_events() -> list[Data]:
@@ -143,6 +144,7 @@ class TixaConnector:
                 status = "fail"
                 description = "Az esemény nem talalhato az adatbazisban."
                 link = event_tixa_url
+                # link = f"https://www.facebook.com/search/events/?q={event_name}"
                 for row in rows:
                     id, name, tixa_url = row
 
@@ -151,12 +153,14 @@ class TixaConnector:
                         status = "success"
                         description = "Letezik az adatbazisban."
                         link = f"https://www.tivornya.hu/E/{id}"
+                        # link = f"https://www.facebook.com/search/events/?q={event_name}"
                         break
                     # name match: partial success
                     elif tixa_url is None: 
                         status = "normal"
                         description = f"Letezik esemény hasonlo nevvel ({name}). Nincs tixa_url-el osszekotve."
                         link = f"https://www.tivornya.hu/E/{id}"
+                        # link = f"https://www.facebook.com/search/events/?q={event_name}"
                 
                 data = Data(
                     title=event_name,
@@ -195,7 +199,9 @@ if __name__ == "__main__":
         "port": os.getenv("POSTGRES_PORT", 5432),
     }
 
+    show_success = os.getenv("SHOW_SUCCESS", False)
+
     reporter = TixaConnector(DB_CONFIG)
-    reporter.make_report(show_success=True)
+    reporter.make_report(show_success=show_success)
 
     logger.info("Exiting...")

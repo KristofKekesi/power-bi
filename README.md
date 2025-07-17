@@ -16,7 +16,8 @@ Futtatás
 python3 -m venv .venv     # Virtuális környezet létrehozása
 source .venv/bin/activate # Virtuális környezet aktiválása
 python3 -m pip install -r folder/requirements.txt
-PYTHONPATH=$(pwd) python3 -m folder.main
+export $(grep -v '^\s*#' .env | xargs) >/dev/null 2>&1 \\ # Környezeti változók beállítása
+&& PYTHONPATH="$(pwd)" \\ python3 -m tixa_report.main
 ```
 Merge előtt
 - futtatás (lefut-e?)
@@ -27,3 +28,7 @@ python3 -m pylint --recursive=y --rcfile=folder/.pylintrc folder
 # Teendők:
 - [ ] tixa-report: Az adatbázis kapcsolat legyen opcionális.
 - [ ] tixa-report: Minden ismert tixa_url megnézése hogy ott van e újdonság.
+- [ ] tixa-report: Helyszín helyszíne.
+- [ ] tixa-report: fontosság, dátum és név szerinti sort opció.
+- [ ] ticketswap-report
+- [ ] bandsintown-report
