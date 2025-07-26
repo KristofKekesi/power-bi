@@ -1,30 +1,13 @@
 """
 Logics regarding scraping data from bandsintown.com.
 """
+
 from modules.custom_logger import CustomLogger
 from urllib.parse import urlparse
 from playwright.async_api import async_playwright
-import asyncio
-import re
 from urllib.parse import urlparse
 from modules.custom_logger import CustomLogger
 from playwright.sync_api import sync_playwright
-from time import sleep
-
-# Returns:
-# - place:
-#	- name (str)
-#	- bandsintown_url (str)
-#	- events (list[str]): list of the bandsintown_url-s of events
-# - event:
-#	- name (str)
-#	- place (str): bandsintown_url of the place
-#	- bandsintown_url (str)
-#	- artists (list[str]): list of the bandsintown_url-s of artists
-# - artist:
-#	- name (str)
-#	- bandsintown_url (str)
-#	- events (list[str]): list of the bandsintown_url-s of events
 
 class BandsintownConnector:
 	"""
@@ -36,9 +19,11 @@ class BandsintownConnector:
 		"""
 		Function to handle url based scraping.
 		"""
+
 		self.logger.info(f"Identifying process to scrape URL ({url}) with...")
 		parsed_url = urlparse(url)
 		path = parsed_url.path.split("/")
+
 		match path[1]:
 			case "e": 
 				self.logger.info("Using event scraping method.")
@@ -54,6 +39,7 @@ class BandsintownConnector:
 		"""
 		Function to scrape data from the event page.
 		"""
+
 		data = []
 		with sync_playwright() as p:
 			browser =  p.chromium.launch(headless=True)
@@ -68,7 +54,7 @@ class BandsintownConnector:
 					"bandsintown_url":      url 
 				}]
 
-				#Locating upcoming concerts and stripping the URLs to their original form
+				# locating upcoming concerts
 				links = page.locator('.tY_uoLiOK4FrxkcoAV7k').all()
 				for link in links:
 					link = link.get_attribute('href')
@@ -76,11 +62,11 @@ class BandsintownConnector:
 					events.append(event_url)
 				return events
 			
-			#locing event name			
+			# locating event name			
 			page.wait_for_selector('._FmG2rq5Aj0u3WF5Nunp')
 			name =  page.locator('._FmG2rq5Aj0u3WF5Nunp').inner_text()
 
-			#locating bandsintown_url of the place and stripping the URLs to their original form
+			# locating bandsintown_url of the place
 			page.wait_for_selector('.cmjTos0Zxfv6k1J2SE4c')
 			place_url =  page.locator('.cmjTos0Zxfv6k1J2SE4c').get_attribute('href')
 			place_url = place_url.split("?")[0]
@@ -102,19 +88,14 @@ class BandsintownConnector:
 			page = browser.new_page()
 			page.goto(url, wait_until='networkidle')
 		
-			#locating artist name
+			# locating artist name
 			page.wait_for_selector('h1')
 			artist_name = page.locator('h1').inner_text()
 			data.append({
 				"Artist name":      artist_name,
 				"Artist link":      url,
 			})
-			"""
-				Not the best work of my life :) 
-				First we collect all the links on page and sorting out just the events "e". 
-				After that we put in to a set to sort the duplications because the are 
-				"concerts near you" and "all concerts & live streams" are the same. 
-			"""
+
 			links = page.locator('a').all()
 			link_list = []
 			link_del = set()
@@ -137,8 +118,8 @@ if __name__ == "__main__":
 	logger = CustomLogger("Example")
 	connector = BandsintownConnector()
 	url = 'https://www.bandsintown.com/a/3959010'
-	url2 = 'https://www.bandsintown.com/e/106959093-blahalouisiana-at-budapest-park'
-	url3 = 'https://www.bandsintown.com/v/10121097-budapest-park'
-	data =  connector(url3)
+	    # 'https://www.bandsintown.com/e/106959093-blahalouisiana-at-budapest-park'
+	    # 'https://www.bandsintown.com/v/10121097-budapest-park'
+	data =  connector(url)
 	logger.info(data)
 

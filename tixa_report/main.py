@@ -5,7 +5,7 @@ from datetime import date
 from unidecode import unidecode
 from modules.db import connect_to_db
 from modules.pdf import Title, Data, PDFData
-from tixa_report.modules.playwright_kod import scrape
+from tixa_report.modules.tixa_connector import TixaConnector
 from modules.custom_logger import CustomLogger
 
 """
