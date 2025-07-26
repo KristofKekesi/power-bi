@@ -2,7 +2,13 @@
 Ez a repó tartalmazza azokat a kódokat, amik riportokat készítenek a Tivornya tartalmával kapcsolatban.
 
 ## Megvalósítás
-Konténerizált projektek, amik összehasonlítják a Tivornya tartalmait külső források tartalmaival. A készült PDF-eket AWS S3 Bucketbe tölti fel.
+Konténerizált projektek, amik 
+1. összegyűjti a 3. félhez kapcsolódó linkeket a fő adatbázisból
+2. lekérdezi az adatokat a harmadik felektől
+3. eltárolja ezeket saját adatbázisban
+4. a tárolt adatokból riportokat készít.
+
+![image](stack.png)
 
 ## Feladatok
 - Tixa riport: A tixa.hu oldalon található kiemelt programok összehasonlítása a saját adatbázisban találhatóakkal. A hiányzó adatok jelentése, általános statisztika levonása csak jelen adatokra és az előző adatokhoz képest is.
