@@ -1,8 +1,8 @@
-from modules.custom_logger import CustomLogger
 from urllib.parse import urlparse
 from playwright.async_api import async_playwright
 import asyncio
 import re
+from modules.custom_logger import CustomLogger
 
 class TixaConnector:
     def __init__(self, headless=True):
@@ -44,7 +44,7 @@ class TixaConnector:
             browser = await p.chromium.launch(headless=self.headless)
             page = await browser.new_page()
             await page.goto(url, timeout=timeout)
-            
+
             #Scraping for if it is just an event
             location_name2 = await page.query_selector('[data-bind*="locationName"]')
             event_title2 = await page.query_selector('[data-bind*="title"]')
@@ -62,7 +62,7 @@ class TixaConnector:
                     "tixa_url": url,
                 })
                 return events
-            
+
             #Scraping for if it is a place with events
             event_title = '[data-bind*="text: data.name"]'
             location_name = '[data-bind="text: data.location.name"]'
@@ -83,7 +83,7 @@ class TixaConnector:
                     "venue_url": url,
                     "date": await event_dates[i].inner_text(),
                     "tixa_url": await event_titles[i].get_attribute('href'),
-			    })
+                })
 
             await browser.close()
         return events
@@ -98,7 +98,7 @@ class TixaConnector:
             await self._scroll(page)
 
             name_elements = await page.locator('[data-bind="text: data.name, attr: { href: data.url }"]').all()
-            
+
             for elem in name_elements:
                 link = await elem.get_attribute("href")
                 if link:
