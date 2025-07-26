@@ -8,7 +8,7 @@ Konténerizált projektek, amik
 3. eltárolja ezeket saját adatbázisban
 4. a tárolt adatokból riportokat készít.
 
-![image](stack.png)
+![image](stack.svg)
 
 ## Feladatok
 - Tixa riport: A tixa.hu oldalon található kiemelt programok összehasonlítása a saját adatbázisban találhatóakkal. A hiányzó adatok jelentése, általános statisztika levonása csak jelen adatokra és az előző adatokhoz képest is.
