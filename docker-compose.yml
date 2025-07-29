@@ -1,0 +1,58 @@
+services:
+  database:
+    image: postgres:15
+    container_name: postgres-1
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: myapp
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 1m
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+  init:
+    build:
+      context: ./init
+      dockerfile: Dockerfile
+    container_name: db-init
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "on-failure"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mock
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@tivornya.hu
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  app_network:
+    driver: bridge
