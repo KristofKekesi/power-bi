@@ -34,6 +34,8 @@ if __name__ == "__main__":
 
 	pdf = PdfGenerator()
 	pdf.create(generateLatex(
+		placeStats="a",
+		eventStats="a",
 		placesMultiplatform=getRandomPlaces(),
 		placesTixa=getRandomPlaces(),
 		placesTicketswap=getRandomPlaces(),

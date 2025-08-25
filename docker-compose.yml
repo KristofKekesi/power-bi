@@ -32,6 +32,12 @@ services:
       POSTGRES_DB: mock
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
+  connection_importer:
+  tixa_scraper:
+  ticketswap_scraper:
+  bandsintown_scraper:
+  openstreetmap_parser:
+  report:
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: pgadmin
