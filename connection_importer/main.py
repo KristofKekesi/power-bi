@@ -4,19 +4,41 @@ from datetime import datetime
 from os import getenv
 import asyncio
 import traceback
+from modules.db import connect_to_db
 
 def connectionImporter() -> None:
-	# Get connections
+	MAIN_DB_CONFIG = {
+        "dbname": getenv("POSTGRES_DB", "mock"),
+        "user": getenv("POSTGRES_USER", "user"),
+        "password": getenv("POSTGRES_PASSWORD", "password"),
+        "host": getenv("POSTGRES_HOST", "localhost"),
+        "port": getenv("POSTGRES_PORT", 5432),
+    }
+
+	PROJECT_DB_CONFIG = {
+        "dbname": getenv("POSTGRES_DB", "mock"),
+        "user": getenv("POSTGRES_USER", "user"),
+        "password": getenv("POSTGRES_PASSWORD", "password"),
+        "host": getenv("POSTGRES_HOST", "localhost"),
+        "port": getenv("POSTGRES_PORT", 5432),
+    }
+
+	main_conn = connect_to_db(**MAIN_DB_CONFIG)
+	main_cursor = main_conn.cursor()
+	logger.info("Connected to the main database.")
+
+	# Get connections from main db.
 	sql = '''
 	SELECT artist_id, event_id, subevent_id, place_id, tixa_url, ticket_url, bandsintown_url
 	FROM urls
 	WHERE tixa_url IS NOT NULL or ticket_url IS NOT NULL or bandsintown_url IS NOT NULL;
 	'''
 
-	# Delete all data from the connections table.
-	raise NotImplementedError
+	proj_conn = connect_to_db(**PROJECT_DB_CONFIG)
+	proj_cursor = proj_conn.cursor()
+	logger.info("Connected to the project's database.")
 
-	# Load connections into the db.
+	# Load connections into the project's db.
 	raise NotImplementedError
 
 async def scheduler(function, cron_expression: str = "0 */6 * * *"):

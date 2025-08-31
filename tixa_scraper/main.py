@@ -1,11 +1,11 @@
 import re
-import os
+from os import getenv
 from psycopg2 import sql
 from datetime import date
 from unidecode import unidecode
 from modules.db import connect_to_db
 from modules.pdf import Title, Data, PDFData
-from tixa_report.modules.tixa_connector import TixaConnector
+from tixa_scraper.modules.tixa_connector import TixaConnector
 from modules.custom_logger import CustomLogger
 
 """
@@ -192,14 +192,14 @@ if __name__ == "__main__":
     logger.info("Starting...")
 
     DB_CONFIG = {
-        "dbname": os.getenv("POSTGRES_DB", "mock"),
-        "user": os.getenv("POSTGRES_USER", "user"),
-        "password": os.getenv("POSTGRES_PASSWORD", "password"),
-        "host": os.getenv("POSTGRES_HOST", "localhost"),
-        "port": os.getenv("POSTGRES_PORT", 5432),
+        "dbname": getenv("POSTGRES_DB", "mock"),
+        "user": getenv("POSTGRES_USER", "user"),
+        "password": getenv("POSTGRES_PASSWORD", "password"),
+        "host": getenv("POSTGRES_HOST", "localhost"),
+        "port": getenv("POSTGRES_PORT", 5432),
     }
 
-    show_success = os.getenv("SHOW_SUCCESS", False)
+    show_success = getenv("SHOW_SUCCESS", False)
 
     reporter = TixaConnector(DB_CONFIG)
     reporter.make_report(show_success=show_success)
