@@ -1,6 +1,5 @@
 # robots_fetcher.py
 from __future__ import annotations
-
 import time
 from dataclasses import dataclass
 from typing import Callable, Dict, List, Optional, Tuple
@@ -292,10 +291,9 @@ if __name__ == "__main__":
     fetcher = CustomFetcher(user_agent="DemoBot/1.0")
 
     # If the original URL is disallowed, try the homepage and /about as fallbacks
-    def modifier(_: str):
+    def modifier(url: str):
         return [
-            "https://example.com/",
-            "https://example.com/about",
+            f"{url}/hehe"
         ]
 
     test_url = "https://example.com/some/disallowed/path"

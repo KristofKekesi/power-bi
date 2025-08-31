@@ -6,6 +6,7 @@ from random import choice
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
 from modules.custom_logger import CustomLogger
+from modules.data_classes import Event
 
 class TicketSwapConnector:
 	"""
@@ -140,14 +141,14 @@ class TicketSwapConnector:
 			events = []
 			for _, element in enumerate(elements, start=1):
 				ticketswap_url = element.get_attribute("href")
-				title = element.query_selector("h4").inner_text().strip()
+				name = element.query_selector("h4").inner_text().strip()
 				venue = element.query_selector("h5").inner_text().strip()
 				date = element.query_selector(
 					"div:has(svg[aria-label='CalendarAlt']) span"
 				).inner_text().strip()
 
 				events.append({
-					"title":			title,
+					"title":			name,
 					"venue":			venue,
 					"date":				date,
 					"ticketswap_url":	ticketswap_url,

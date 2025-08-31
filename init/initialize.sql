@@ -26,6 +26,23 @@ CREATE TABLE IF NOT EXISTS connections (
         )
 );
 
+CREATE TABLE IF NOT EXISTS new_connections (
+      tixa_url varchar(2000)
+       CHECK (TRIM(tixa_url) <> '')
+    , ticketswap_url varchar(2000)
+       CHECK (TRIM(ticketswap_url) <> '')
+    , bandsintown_url varchar(2000)
+       CHECK (TRIM(bandsintown_url) <> '')
+    , openstreetmap_id int
+        CHECK (
+            (tixa_url IS NOT NULL) OR
+            (ticketswap_url IS NOT NULL) OR
+            (bandsintown_url IS NOT NULL) OR
+            (openstreetmap_id IS NOT NULL)
+        )
+    , discriminator varchar(32)
+);
+
 CREATE TABLE IF NOT EXISTS scrapes (
 	  scraped_url varchar(2000)
         CHECK (TRIM(scraped_url) <> '')
