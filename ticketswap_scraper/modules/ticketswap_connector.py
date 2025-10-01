@@ -6,7 +6,8 @@ from random import choice
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
 from modules.custom_logger import CustomLogger
-from modules.data_classes import Event
+from modules.data_classes import Event, URLs
+from typing import List
 
 class TicketSwapConnector:
 	"""
@@ -96,7 +97,7 @@ class TicketSwapConnector:
 		Since the site's pages are generally the same
 		we can use this function on every page.
 		"""
-		def callback(page):
+		def callback(page) -> List[Event]:
 			self.logger.info(f"Started scraping {url}. Timeout is set to {timeout/1_000}s.")
 			page.goto(url, timeout=timeout, wait_until="domcontentloaded")
 
@@ -140,19 +141,22 @@ class TicketSwapConnector:
 
 			events = []
 			for _, element in enumerate(elements, start=1):
-				ticketswap_url = element.get_attribute("href")
 				name = element.query_selector("h4").inner_text().strip()
-				venue = element.query_selector("h5").inner_text().strip()
+				place_link = element.query_selector("h5").inner_text().strip()
+				ticketswap_url = element.get_attribute("href")
 				date = element.query_selector(
 					"div:has(svg[aria-label='CalendarAlt']) span"
 				).inner_text().strip()
 
-				events.append({
-					"title":			name,
-					"venue":			venue,
-					"date":				date,
-					"ticketswap_url":	ticketswap_url,
-				})
+				event = Event(
+					name,
+					placeLinks= ["TODO"],
+					URLs = URLs(
+						ticketswapURL = ticketswap_url
+					)
+				);
+
+				events.append(event)
 
 			self.logger.info(f"Scraped {len(events)} events.")
 			return events

@@ -29,9 +29,22 @@ def connectionImporter() -> None:
 
 	# Get connections from main db.
 	sql = '''
-	SELECT artist_id, event_id, subevent_id, place_id, tixa_url, ticket_url, bandsintown_url
-	FROM urls
-	WHERE tixa_url IS NOT NULL or ticket_url IS NOT NULL or bandsintown_url IS NOT NULL;
+	SELECT 
+		  url.artist_id
+		, url.event_id
+		, url.subevent_id
+		, url.place_id
+		, url.tixa_url
+		, url.ticket_url
+		, url.bandsintown_url
+		, place.openstreetmap_id
+	FROM urls url
+	LEFT JOIN places place on url.place_id = place.id
+	WHERE 
+		url.tixa_url IS NOT NULL or 
+		url.ticket_url IS NOT NULL or 
+		url.bandsintown_url IS NOT NULL
+	;
 	'''
 
 	proj_conn = connect_to_db(**PROJECT_DB_CONFIG)
@@ -39,7 +52,16 @@ def connectionImporter() -> None:
 	logger.info("Connected to the project's database.")
 
 	# Load connections into the project's db.
-	raise NotImplementedError
+	try:
+		# Run sql (31. row) save it to a variable
+		# Generate upload sql based on the values from it
+		# Run upload sql
+		pass
+	except Exception as e:
+		pass
+	finally:
+		pass
+	
 
 async def scheduler(function, cron_expression: str = "0 */6 * * *"):
 	"""

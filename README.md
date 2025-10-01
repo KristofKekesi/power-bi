@@ -22,7 +22,7 @@ Futtatás
 python3 -m venv .venv     # Virtuális környezet létrehozása
 source .venv/bin/activate # Virtuális környezet aktiválása
 python3 -m pip install -r folder/requirements.txt
-eset -a && source .env && set +a && PYTHONPATH="$(pwd)" python3 -m report.main
+set -a && source .env && set +a && PYTHONPATH="$(pwd)" python3 -m report.main
 ```
 Merge előtt
 - futtatás (lefut-e?)

@@ -1,7 +1,5 @@
 import csv
-import logging
-from sys import stdout
-from os import getenv, fsencode, listdir, path
+from os import getenv, listdir, path
 from modules.db import connect_to_db, sanitize_row
 from modules.custom_logger import CustomLogger
 
