@@ -199,9 +199,13 @@ if __name__ == "__main__":
         "port": getenv("POSTGRES_PORT", 5432),
     }
 
-    show_success = getenv("SHOW_SUCCESS", False)
-
-    reporter = TixaConnector(DB_CONFIG)
-    reporter.make_report(show_success=show_success)
+    # Loop:
+    # 1. megnézzük mit kell scrapelni
+    #   1. ami még nincs scrapelve
+    #   2. legrégebben scrapeld újra scrapelése
+    #      (környezeti változóba: mekkora eltelt idő után scrapelünk újra)
+    # 2. scrapelink
+    # 3. json
+    # 4. feltöltés
 
     logger.info("Exiting...")
